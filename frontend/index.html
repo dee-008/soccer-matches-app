@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upcoming Soccer Matches</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .match { margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Upcoming Soccer Matches</h1>
+  <div id="matches">Loading...</div>
+
+  <script>
+    fetch('https://soccer-matches-app.onrender.com') // replace with Render backend URL
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('matches');
+        container.innerHTML = '';
+        data.forEach(match => {
+          const matchEl = document.createElement('div');
+          matchEl.className = 'match';
+          const team1 = match.teams.home.name;
+          const team2 = match.teams.away.name;
+          const date = new Date(match.fixture.date).toLocaleString();
+          matchEl.textContent = `${team1} vs ${team2} - ${date}`;
+          container.appendChild(matchEl);
+        });
+      })
+      .catch(() => {
+        document.getElementById('matches').textContent = 'Failed to load matches.';
+      });
+  </script>
+</body>
+</html>
